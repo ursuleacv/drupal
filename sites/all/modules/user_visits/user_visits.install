@@ -1,0 +1,69 @@
+<?php
+/**
+ * Implementation of hook_schema().
+ */
+function user_visits_schema() {
+  $schema['user_visits'] = array(
+    'description' => t('The base table user activity.'),
+    'fields' => array(
+      'id' => array(
+        'description' => t('The primary identifier.'),
+        'type'=>'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'uid' => array(
+        'description' => t('The primary identifier for a user.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'nodetype' => array(
+        'description' => t('Node type.'),
+        'type' => 'varchar',
+        'length' => 255),
+      'nid' => array(
+        'description' => t('Node ID'),
+        'type' => 'varchar',
+        'length' => 255),
+      'vpath' => array(
+        'description' => t('The path the user visited'),
+        'type' => 'varchar',
+        'length' => 255),
+      'query' => array(
+        'description' => t('The Query Parameter of the page requested'),
+        'type' => 'varchar',
+        'length' => 255),
+      'created' => array(
+        'description' => t('Timestamp of visit.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'referer' => array(
+        'description' => t('Whre the user came from.'),
+        'type' => 'varchar',
+        'length' => 255),
+      ),
+    'primary key'=>array("id"),
+    'indexes' => array(
+      'uid'  => array('uid'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function user_visits_install() {
+  drupal_install_schema('user_visits');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function user_visits_uninstall() {
+  drupal_uninstall_schema('user_visits');
+
+  variable_del('user_visits_display');
+  variable_del('user_visits_block_items_0');
+  variable_del('user_visits_block_items_1');
+}

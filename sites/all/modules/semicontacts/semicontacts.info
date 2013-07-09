@@ -1,0 +1,4 @@
+name = Semicolon Contacts Module
+description = My Second Drupal Module
+core = 6.x
+package = Semicolon

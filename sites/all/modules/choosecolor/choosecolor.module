@@ -1,0 +1,74 @@
+<?php
+
+function choosecolor_init(){
+  //drupal_add_css(drupal_get_path('module', 'choosecolor') .'/red.css');
+}
+function choosecolor_menu(){
+
+    $items = array();
+    $items['choosecolor'] = array(
+    'title' => t('Choose color - Form'),
+    'page callback' => 'choosecolor_page',
+    'page arguments' => array("1"),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+      );
+
+ 
+    return $items;
+
+}
+
+function choosecolor_page($argument) {
+    $content = "<p>Hello World! Wow It really works :)</p>
+                <p>This is a simple module to save contacts to the database.</p>
+                Enter Contact Details.
+                ";
+    $content .= drupal_get_form('choosecolor_form');
+    
+ drupal_add_js(drupal_get_path('module', 'choosecolor').'/color.js', 'module','footer' );
+
+    return $content;
+}
+
+
+
+function choosecolor_form(){
+
+    $form = array();
+    
+    $colors = array(t('Black'), t('Green'), t('Red'));
+    //create a select field
+    
+    $form['color'] = array(
+    '#type' => 'select',
+    '#options' => drupal_map_assoc($colors),
+    '#title' => t('Color'),
+    );
+
+
+    //create submit button
+    $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save Contact'),
+
+    );
+
+
+    //return the form
+    return $form;
+}
+
+/**
+ * Implement hoook_submit()
+ *
+ * @param <type> $form_id
+ * @param <type> $form_data
+ */
+function choosecolor_form_submit($form_id, &$form_data){
+	
+	//$form_data['values']['color']);
+
+    drupal_set_message(t('Your contact has been saved to the database.'));
+}
+

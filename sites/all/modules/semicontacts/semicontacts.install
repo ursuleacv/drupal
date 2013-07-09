@@ -1,0 +1,53 @@
+<?php
+//$Id
+
+/**
+ * Implement hook_schema()
+ */
+function semicontacts_schema(){
+    $schema['semicontacts'] = array(
+                        'description' => t('Store .'),
+                        'fields'=>array(
+                            'id'=>array(
+                                'type'=>'serial',
+                                'unsigned'=>TRUE,
+                                'not null'=>TRUE
+                            ),
+                            'firstname'=>array(
+                                'type'=>'varchar',
+                                'length'=>255,
+                                'default' => '',
+                                'not null'=>TRUE
+                            ),
+                            'lastname'=>array(
+                                'type'=>'varchar',
+                                'length'=>255,
+                                'default' => '',
+                                'not null'=>TRUE
+                            ),
+                            'phonenumber'=>array(
+                                'type'=>'varchar',
+                                'length'=>255,
+                                'default' => '',
+                                'not null'=>TRUE
+                            ),
+                        ),
+                        'primary key'=>array("id"),
+                );
+    return $schema;
+}
+
+/**
+ * Implement hook_install()
+ */
+function semicontacts_install(){
+    drupal_install_schema('semicontacts');
+}
+
+/**
+ * Implement hook_uninstall
+ */
+function helloworld2_uninstall(){
+    drupal_uninstall_schema('helloworld2');
+}
+

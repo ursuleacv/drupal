@@ -1,0 +1,110 @@
+<?php
+
+function semicontacts_menu(){
+
+    $items = array();
+    $items['semicontacts'] = array(
+    'title' => t('Semicontacts - Form'),
+    'page callback' => 'semicontacts_page',
+    'page arguments' => array("1"),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+      );
+
+    $items['semicontacts/list'] = array(
+    'title' => t('Semicontacts - List'),
+    'page callback' => 'semicontacts_list_page',
+    'page arguments' => array("1"),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+      );
+
+    return $items;
+
+}
+
+function semicontacts_page($argument) {
+    $content = "<p>Hello World! Wow It really works :)</p>
+                <p>This is a simple module to save contacts to the database.</p>
+                Enter Contact Details.
+                ";
+    $content .= drupal_get_form('semicontacts_form');
+    $content .= t(l("List Contacts","semicontacts/list"));
+    return $content;
+}
+
+
+function semicontacts_list_page($argument) {
+    $content = t("List of contacts<br /><br />");
+    $content .= t(l("Add New Contact","semicontacts"));
+    $result = db_query('SELECT c.id, c.firstname, c.lastname, c.phonenumber FROM semicontacts c order by lastname asc');
+    $content .= "<ul>";
+    while ($contact = db_fetch_object($result)) {
+        $content .= "<li>$contact->lastname, $contact->firstname - $contact->phonenumber</li>";// Perform operations on $node->body, etc. here.
+    }
+    $content .= "</ul>";
+    $content .= l(t("Add New Contact"),"semicontacts");
+
+    return $content;
+}
+
+
+function semicontacts_form(){
+
+    $form = array();
+
+    //create a text field called firstname with label First Name
+    $form['firstname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('First Nmae'),
+    );
+
+    //create a text field called lastname with label Last Name
+    $form['lastname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Last Name'),
+    );
+
+    //create a text field called phonenumber with label Phone Number
+    $form['phonenumber'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Phone Number'),
+    );
+
+    //create submit button
+    $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save Contact'),
+    );
+
+    //return the form
+    return $form;
+}
+
+/**
+ * Implement hoook_submit()
+ *
+ * @param <type> $form_id
+ * @param <type> $form_data
+ */
+function semicontacts_form_submit($form_id, &$form_data){
+    db_query("INSERT INTO semicontacts (firstname, lastname, phonenumber) VALUES ('%s', '%s', '%s')", $form_data['values']['firstname'], $form_data['values']['lastname'],  $form_data['values']['phonenumber']);
+    drupal_set_message(t('Your contact has been saved to the database.'));
+}
+
+
+/**
+ *  Implement hook_validate()
+ * @param <type> $form_id
+ * @param <type> $form_data
+ */
+function semicontacts_form_validate($form_id, &$form_data){
+    //var_dump($form_value);
+    if(!is_string($form_data['values']['firstname'])|| empty($form_data['values']['firstname'])){
+        form_set_error('firstname', t("Please Enter a valid First Name"));
+    }elseif(!is_string($form_data['values']['lastname']) || empty($form_data['values']['lastname'])){
+        form_set_error('lastname', t("Please Enter a valid Last Name"));
+    }elseif(!is_numeric($form_data['values']['phonenumber']) || empty($form_data['values']['phonenumber'])){
+        form_set_error('phonenumber', t("Please Enter a valid Phone Number"));
+    }
+}

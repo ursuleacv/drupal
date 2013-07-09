@@ -1,0 +1,8 @@
+name         = User Visits
+description  = "Shows the visited pages, queries, users."
+core = 6.x
+version = "6.28"
+core = "6.x"
+project = "user_visits"
+datestamp = "1240572679"
+
