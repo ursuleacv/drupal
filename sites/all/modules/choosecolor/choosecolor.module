@@ -1,7 +1,8 @@
 <?php
 
 function choosecolor_init(){
-  //drupal_add_css(drupal_get_path('module', 'choosecolor') .'/red.css');
+  drupal_add_js(drupal_get_path('module', 'choosecolor').'/color.js', 'module','footer' );
+drupal_add_js(drupal_get_path('module', 'choosecolor').'/cookie.js', 'module','footer' );
 }
 function choosecolor_menu(){
 
@@ -20,14 +21,13 @@ function choosecolor_menu(){
 }
 
 function choosecolor_page($argument) {
-    $content = "<p>Hello World! Wow It really works :)</p>
-                <p>This is a simple module to save contacts to the database.</p>
-                Enter Contact Details.
+    $content = "<p>Change the text's color</p>
+                <p>This is a simple module to change the text's color dynamically</p>
+                
                 ";
     $content .= drupal_get_form('choosecolor_form');
     
- drupal_add_js(drupal_get_path('module', 'choosecolor').'/color.js', 'module','footer' );
-
+ 
     return $content;
 }
 
@@ -50,7 +50,7 @@ function choosecolor_form(){
     //create submit button
     $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Save Contact'),
+    '#value' => t('Save Color'),
 
     );
 
